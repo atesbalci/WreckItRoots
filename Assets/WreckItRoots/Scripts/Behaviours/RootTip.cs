@@ -1,21 +1,29 @@
 using UnityEngine;
 using WreckItRoots.Models;
+using Zenject;
 
 namespace WreckItRoots.Behaviours
 {
     public class RootTip : MonoBehaviour, IRootTip
     {
-        [SerializeField] private AnimationCurve velocityCurve;
-        [SerializeField] private float velocityMultiplier;
-        [SerializeField] private AnimationCurve maneuverSpeedCurve;
-        [SerializeField] private float maneuverSpeedMultiplier;
-        
         public Vector2 Position => transform.position;
         public PlantState State { get; private set; }
         public float Angle { get; private set; }
+        public float RootMomentum => _rootDataProvider.GetRootMomentum(_maxDepth);
+        public float RootLifetime => Time.time - _lastRootTime;
+        public float TotalRootLifetime { get; private set; }
 
+        private IRootDataProvider _rootDataProvider;
         private float _maneuverDirection;
         private float _lastRootTime;
+        private float _maxDepth;
+
+        [Inject]
+        public void Initialize(IRootDataProvider rootDataProvider)
+        {
+            _rootDataProvider = rootDataProvider;
+            Surface();
+        }
         
         public void Maneuver(float direction)
         {
@@ -31,38 +39,30 @@ namespace WreckItRoots.Behaviours
             }
         }
 
+        public void PickUpExtraLifetime(float amount)
+        {
+            TotalRootLifetime += amount;
+        }
+
         private void Update()
         {
             if (State == PlantState.Root)
             {
-                Angle += _maneuverDirection * ManeuverSpeed * Time.deltaTime;
+                Angle += _maneuverDirection * _rootDataProvider.GetManeuverSpeed(RootLifetime) * Time.deltaTime;
                 _maneuverDirection = 0;
                 var angleRad = Angle * Mathf.Deg2Rad;
-                var effectiveVelocity = Velocity * Time.deltaTime;
+                var effectiveVelocity = _rootDataProvider.GetVelocity(RootLifetime) * Time.deltaTime;
                 transform.position += new Vector3(Mathf.Sin(angleRad) * effectiveVelocity,
                     -Mathf.Cos(angleRad) * effectiveVelocity, 0f);
+                _maxDepth = Mathf.Max(_maxDepth, -transform.position.y);
                 if (Position.y > 0.001f)
                 {
                     Surface();
                 }
-            }
-        }
-
-        public float Velocity
-        {
-            get
-            {
-                if (State != PlantState.Root) return 0f;
-                return velocityCurve.Evaluate(Time.time - _lastRootTime) * velocityMultiplier;
-            }
-        }
-
-        private float ManeuverSpeed
-        {
-            get
-            {
-                if (State != PlantState.Root) return 0f;
-                return maneuverSpeedCurve.Evaluate(Time.time - _lastRootTime) * maneuverSpeedMultiplier;
+                else if (RootLifetime > TotalRootLifetime)
+                {
+                    Die();
+                }
             }
         }
 
@@ -73,6 +73,13 @@ namespace WreckItRoots.Behaviours
             transform.position = pos;
             State = PlantState.Tree;
             Angle = 0;
+            _maxDepth = 0;
+            TotalRootLifetime = _rootDataProvider.DefaultRootLifetime;
+        }
+
+        private void Die()
+        {
+            State = PlantState.Dead;
         }
     }
 }
