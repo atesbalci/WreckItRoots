@@ -17,6 +17,7 @@ namespace WreckItRoots.Views
         private Vector3[] _vertexes;
         private float _birthTime;
         private Pool _pool;
+        private int _branchCount;
 
         public void Initialize(int level, Vector2 position, float angle, Pool pool)
         {
@@ -24,6 +25,7 @@ namespace WreckItRoots.Views
             _pool = pool;
             _birthTime = Time.time;
             _angle = angle;
+            _branchCount = 0;
             _lineRenderer = GetComponent<LineRenderer>();
             StopAllCoroutines();
             _vertexes = new Vector3[] { position, position };
@@ -59,7 +61,7 @@ namespace WreckItRoots.Views
             {
                 yield return new WaitForSeconds(_rootBranchDataProvider.GetBranchOutInterval(_level));
                 var newAngle = _angle +
-                               (Random.value > 0.5f ? 1 : -1) * _rootBranchDataProvider.GetBranchOutAngle(_level);
+                               (_branchCount++ % 2 == 0 ? 1 : -1) * _rootBranchDataProvider.GetBranchOutAngle(_level);
                 _pool.Spawn().Initialize(_level + 1, _vertexes[^1], newAngle, _pool);
             }
         }

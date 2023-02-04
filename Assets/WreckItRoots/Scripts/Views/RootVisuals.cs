@@ -17,6 +17,7 @@ namespace WreckItRoots.Views
 
         private float _branchOutInterval;
         private float _branchOutAngle;
+        private int _branchCount;
 
         [Inject]
         public void Initialize(IRootTip rootTip, IRootBranchDataProvider rootBranchDataProvider, RootBranch.Pool branchPool)
@@ -39,7 +40,7 @@ namespace WreckItRoots.Views
                 if (Time.time - _lastBranchOutTime > _branchOutInterval)
                 {
                     _lastBranchOutTime = Time.time;
-                    var newAngle = _rootTip.Angle + (Random.value > 0.5f ? 1 : -1) * _branchOutAngle;
+                    var newAngle = _rootTip.Angle + (_branchCount++ % 2 == 0 ? 1 : -1) * _branchOutAngle;
                     _branchPool.Spawn().Initialize(1, _rootTip.Position, newAngle, _branchPool);
                 }
             }
