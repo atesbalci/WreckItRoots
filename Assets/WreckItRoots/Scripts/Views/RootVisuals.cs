@@ -13,8 +13,6 @@ namespace WreckItRoots.Views
         private IRootTip _rootTip;
         private RootBranch.Pool _branchPool;
         
-        private Vector3[] _vectorArray;
-        private IList<Vector3> _vectorList;
         private float _lastBranchOutTime;
 
         private float _branchOutInterval;
@@ -28,8 +26,8 @@ namespace WreckItRoots.Views
             _branchOutInterval = rootBranchDataProvider.GetBranchOutInterval(0);
             _branchOutAngle = rootBranchDataProvider.GetBranchOutAngle(0);
             _lineRenderer = GetComponent<LineRenderer>();
-            _vectorList = new List<Vector3>();
-            _vectorList.Add(_rootTip.Position);
+            _lineRenderer.SetPosition(0, _rootTip.Position);
+            _lineRenderer.positionCount = 1;
             StartCoroutine(SegmentPlacementRoutine());
         }
 
@@ -37,9 +35,7 @@ namespace WreckItRoots.Views
         {
             if (_rootTip.State == PlantState.Root)
             {
-                _vectorList[^1] = _rootTip.Position;
-                _vectorArray[^1] = _rootTip.Position;
-                _lineRenderer.SetPositions(_vectorArray);
+                _lineRenderer.SetPosition(_lineRenderer.positionCount - 1, _rootTip.Position);
                 if (Time.time - _lastBranchOutTime > _branchOutInterval)
                 {
                     _lastBranchOutTime = Time.time;
@@ -58,11 +54,8 @@ namespace WreckItRoots.Views
             while (true)
             {
                 yield return new WaitUntil(() => _rootTip.State == PlantState.Root);
-                _vectorList.Add(_rootTip.Position);
-                _vectorArray = _vectorList.ToArray();
-                _lineRenderer.positionCount = _vectorArray.Length;
-                _lineRenderer.SetPositions(_vectorArray);
-                yield return new WaitForSeconds(0.5f);
+                _lineRenderer.SetPosition((++_lineRenderer.positionCount) - 1, _rootTip.Position);
+                yield return new WaitForSeconds(0.25f);
             }
         }
     }

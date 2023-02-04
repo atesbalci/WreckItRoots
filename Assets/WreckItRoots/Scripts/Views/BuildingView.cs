@@ -19,6 +19,12 @@ namespace WreckItRoots.Views
             _building = GetComponent<IBuilding>();
             OnInitialized();
             _building.Initialized += OnInitialized;
+            _building.Wrecked += OnWrecked;
+        }
+
+        private void OnWrecked()
+        {
+            gameObject.SetActive(false);
         }
 
         private void OnInitialized()

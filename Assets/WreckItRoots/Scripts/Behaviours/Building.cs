@@ -8,6 +8,7 @@ namespace WreckItRoots.Behaviours
     public class Building : MonoBehaviour, IBuilding
     {
         public event Action Initialized;
+        public event Action Wrecked;
         public Vector2 Position => transform.position;
         public float Width => 2f;
         public float MomentumResistance { get; private set; }
@@ -23,7 +24,7 @@ namespace WreckItRoots.Behaviours
         
         public void Wreck()
         {
-            // TODO
+            Wrecked?.Invoke();
         }
         
         public class Pool : MonoMemoryPool<Building> { }

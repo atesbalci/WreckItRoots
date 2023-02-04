@@ -39,6 +39,7 @@ namespace WreckItRoots.Behaviours
             if (_rootTip.RootMomentum > building.MomentumResistance)
             {
                 building.Wreck();
+                _rootTip.PickUpExtraLifetime(building.BioEnergyReward);
             }
             else
             {
