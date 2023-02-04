@@ -50,10 +50,8 @@ namespace WreckItRoots.Behaviours
             {
                 Angle += _maneuverDirection * _rootDataProvider.GetManeuverSpeed(RootLifetime) * Time.deltaTime;
                 _maneuverDirection = 0;
-                var angleRad = Angle * Mathf.Deg2Rad;
                 var effectiveVelocity = _rootDataProvider.GetVelocity(RootLifetime) * Time.deltaTime;
-                transform.position += new Vector3(Mathf.Sin(angleRad) * effectiveVelocity,
-                    -Mathf.Cos(angleRad) * effectiveVelocity, 0f);
+                transform.position += Angle.ToRootAngularDirection() * effectiveVelocity;
                 _maxDepth = Mathf.Max(_maxDepth, -transform.position.y);
                 if (Position.y > 0.001f)
                 {
