@@ -17,11 +17,11 @@ MonoBehaviour:
   _levels:
   - Lifetime: 0
     Velocity: 0
-    BranchOutInterval: 1
-    BranchOutAngle: 120
-  - Lifetime: 2
-    Velocity: 1
     BranchOutInterval: 0.5
+    BranchOutAngle: 120
+  - Lifetime: 1.5
+    Velocity: 1
+    BranchOutInterval: 0.25
     BranchOutAngle: 60
   - Lifetime: 1
     Velocity: 1

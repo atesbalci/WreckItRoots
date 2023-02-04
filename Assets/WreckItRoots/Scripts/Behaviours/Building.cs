@@ -21,6 +21,11 @@ namespace WreckItRoots.Behaviours
             Initialized?.Invoke();
         }
         
+        public void Wreck()
+        {
+            // TODO
+        }
+        
         public class Pool : MonoMemoryPool<Building> { }
     }
 }

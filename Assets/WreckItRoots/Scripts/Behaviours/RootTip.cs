@@ -6,8 +6,21 @@ namespace WreckItRoots.Behaviours
 {
     public class RootTip : MonoBehaviour, IRootTip
     {
+        public event PlantStateChangeEvent StateChanged;
         public Vector2 Position => transform.position;
-        public PlantState State { get; private set; }
+
+        public PlantState State
+        {
+            get => _state;
+            private set
+            {
+                if (State == value) return;
+                var oldState = State;
+                _state = value;
+                StateChanged?.Invoke(oldState, State);
+            }
+        }
+
         public float Angle { get; private set; }
         public float RootMomentum => _rootDataProvider.GetRootMomentum(_maxDepth);
         public float RootLifetime => State == PlantState.Root ? Time.time - _lastRootTime : 0f;
@@ -17,6 +30,7 @@ namespace WreckItRoots.Behaviours
         private float _maneuverDirection;
         private float _lastRootTime;
         private float _maxDepth;
+        private PlantState _state;
 
         [Inject]
         public void Initialize(IRootDataProvider rootDataProvider)
@@ -34,8 +48,9 @@ namespace WreckItRoots.Behaviours
         {
             if (State == PlantState.Tree)
             {
-                State = PlantState.Root;
                 _lastRootTime = Time.time;
+                _maxDepth = 0;
+                State = PlantState.Root;
             }
         }
 
@@ -70,10 +85,9 @@ namespace WreckItRoots.Behaviours
             var pos = transform.position;
             pos.y = 0;
             transform.position = pos;
-            State = PlantState.Tree;
             Angle = 0;
-            _maxDepth = 0;
             TotalRootLifetime = _rootDataProvider.DefaultRootLifetime;
+            State = PlantState.Tree;
         }
 
         public void Die()

@@ -8,5 +8,7 @@ namespace WreckItRoots.Models
         float Width { get; }
         float MomentumResistance { get; }
         float BioEnergyReward { get; }
+
+        public void Wreck();
     }
 }

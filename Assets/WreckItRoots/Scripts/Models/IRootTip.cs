@@ -1,7 +1,10 @@
 namespace WreckItRoots.Models
 {
+    public delegate void PlantStateChangeEvent(PlantState oldState, PlantState newState);
+    
     public interface IRootTip : IWorldObject
     {
+        event PlantStateChangeEvent StateChanged;
         PlantState State { get; }
         float Angle { get; }
         float RootMomentum { get; }
