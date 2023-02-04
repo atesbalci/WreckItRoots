@@ -1,9 +1,13 @@
+using System;
 using WreckItRoots.Models;
 
 namespace WreckItRoots.Behaviours
 {
-    public class GameManager
+    public class GameManager : IObservableGame
     {
+        public event Action<IBuilding> BuildingWrecked;
+        public event Action RootSurfaced;
+
         private readonly IRootTip _rootTip;
         private readonly IBuildingProvider _buildingProvider;
 
@@ -23,12 +27,14 @@ namespace WreckItRoots.Behaviours
                     // We're already past this building, no need to check the previous ones
                     if (_rootTip.Position.x > building.Position.x + building.Width * 0.5f)
                     {
+                        RootSurfaced?.Invoke();
                         break;
                     }
                     // We're under a building
                     else if (_rootTip.Position.x > building.Position.x - building.Width * 0.5f)
                     {
                         WreckOrFail(building);
+                        break;
                     }
                 }
             }
@@ -40,6 +46,8 @@ namespace WreckItRoots.Behaviours
             {
                 building.Wreck();
                 _rootTip.PickUpExtraLifetime(building.BioEnergyReward);
+                BuildingWrecked?.Invoke(building);
+                RootSurfaced?.Invoke();
             }
             else
             {

@@ -11,8 +11,10 @@ namespace WreckItRoots.Views
         [SerializeField] private Transform modelPivot;
         [SerializeField] private TMP_Text momentumResistanceText;
         [SerializeField] private TMP_Text bioEnergyText;
+        [SerializeField] private BreakableObject[] breakableObjects;
         
         private IBuilding _building;
+        private BreakableObject _currentBuilding;
         
         private void Start()
         {
@@ -20,11 +22,20 @@ namespace WreckItRoots.Views
             OnInitialized();
             _building.Initialized += OnInitialized;
             _building.Wrecked += OnWrecked;
+
+            var buildingIndex = Random.Range(0, breakableObjects.Length);
+            for (int i = 0; i < breakableObjects.Length; i++)
+            {
+                breakableObjects[i].gameObject.SetActive(buildingIndex == i);
+            }
+
+            _currentBuilding = breakableObjects[buildingIndex];
+            _currentBuilding.ResetPieces();
         }
 
         private void OnWrecked()
         {
-            gameObject.SetActive(false);
+            _currentBuilding.Break();
         }
 
         private void OnInitialized()
