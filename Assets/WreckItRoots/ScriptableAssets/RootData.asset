@@ -63,6 +63,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maneuverSpeedMultiplier: 40
-  manueverabilityGainTimespan: 1
+  maneuverabilityGainTimespan: 1
   rootMomentumPerDepth: 10
   defaultRootLifetime: 7

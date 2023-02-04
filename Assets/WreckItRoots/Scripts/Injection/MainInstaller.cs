@@ -12,6 +12,7 @@ namespace WreckItRoots.Injection
         public override void InstallBindings()
         {
             Container.BindInstance<IRootTip>(_rootTip);
+            Container.Bind(typeof(IBuildingProvider), typeof(ITickable)).To<LevelGenerator>().AsSingle().NonLazy();
         }
     }
 }

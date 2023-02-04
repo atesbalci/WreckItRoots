@@ -12,7 +12,7 @@ namespace WreckItRoots.Injection
         [SerializeField] private float velocityGainTimespan;
         [SerializeField] private AnimationCurve maneuverSpeedCurve;
         [SerializeField] private float maneuverSpeedMultiplier;
-        [SerializeField] private float manueverabilityGainTimespan;
+        [SerializeField] private float maneuverabilityGainTimespan;
         [SerializeField] private float rootMomentumPerDepth;
         [SerializeField] private float defaultRootLifetime;
         
@@ -30,7 +30,7 @@ namespace WreckItRoots.Injection
 
         public float GetManeuverSpeed(float lifetime)
         {
-            return maneuverSpeedCurve.Evaluate(lifetime / manueverabilityGainTimespan) * maneuverSpeedMultiplier;
+            return maneuverSpeedCurve.Evaluate(lifetime / maneuverabilityGainTimespan) * maneuverSpeedMultiplier;
         }
 
         public float GetRootMomentum(float maxDepth)

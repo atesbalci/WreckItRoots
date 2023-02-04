@@ -15,7 +15,7 @@ namespace WreckItRoots.Injection
         {
             Container.BindInstance<IRootBranchDataProvider>(this);
             Container.BindMemoryPool<RootBranch, RootBranch.Pool>().WithInitialSize(50)
-                .FromComponentInNewPrefab(rootBranchPrefab).AsSingle();
+                .FromComponentInNewPrefab(rootBranchPrefab);
         }
 
         public float GetLifetime(int level) => _levels[level].Lifetime;

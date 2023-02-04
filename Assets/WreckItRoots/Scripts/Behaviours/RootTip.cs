@@ -10,7 +10,7 @@ namespace WreckItRoots.Behaviours
         public PlantState State { get; private set; }
         public float Angle { get; private set; }
         public float RootMomentum => _rootDataProvider.GetRootMomentum(_maxDepth);
-        public float RootLifetime => Time.time - _lastRootTime;
+        public float RootLifetime => State == PlantState.Root ? Time.time - _lastRootTime : 0f;
         public float TotalRootLifetime { get; private set; }
 
         private IRootDataProvider _rootDataProvider;
@@ -49,6 +49,7 @@ namespace WreckItRoots.Behaviours
             if (State == PlantState.Root)
             {
                 Angle += _maneuverDirection * _rootDataProvider.GetManeuverSpeed(RootLifetime) * Time.deltaTime;
+                Angle = Mathf.Max(0f, Angle); // Can't go left in the game :)
                 _maneuverDirection = 0;
                 var effectiveVelocity = _rootDataProvider.GetVelocity(RootLifetime) * Time.deltaTime;
                 transform.position += Angle.ToRootAngularDirection() * effectiveVelocity;
@@ -75,7 +76,7 @@ namespace WreckItRoots.Behaviours
             TotalRootLifetime = _rootDataProvider.DefaultRootLifetime;
         }
 
-        private void Die()
+        public void Die()
         {
             State = PlantState.Dead;
         }

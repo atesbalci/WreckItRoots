@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3e3e93f17c4aba8c70e65508d40f9f, type: 3}
+  m_Name: LevelGenerationData
+  m_EditorClassIdentifier: 
+  buildingPrefab: {fileID: 846770596779464087, guid: 20acbeb03db534f53bc6cbcbe948f629,
+    type: 3}
+  interBuildingDistance: 5
+  generatedBuildingsAheadCount: 6
+  buildingEntries:
+  - MomentumResistance: 10
+    BioEnergyBonus: 20
+  - MomentumResistance: 20
+    BioEnergyBonus: 30
+  - MomentumResistance: 30
+    BioEnergyBonus: 40
