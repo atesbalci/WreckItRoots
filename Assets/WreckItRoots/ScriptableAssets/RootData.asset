@@ -65,4 +65,4 @@ MonoBehaviour:
   maneuverSpeedMultiplier: 80
   maneuverabilityGainTimespan: 1
   rootMomentumPerDepth: 10
-  defaultRootLifetime: 7
+  defaultRootLifetime: 6

@@ -2,12 +2,14 @@ using System;
 using UnityEngine;
 using WreckItRoots.Views;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace WreckItRoots.Injection
 {
     [CreateAssetMenu]
     public class RootBranchDataScriptableObject : ScriptableObjectInstaller<RootBranchDataScriptableObject>, IRootBranchDataProvider
     {
+        [SerializeField] private float maxBranchOutHeight;
         [SerializeField] private GameObject rootBranchPrefab;
         [SerializeField] private LevelEntry[] _levels;
         
@@ -24,7 +26,13 @@ namespace WreckItRoots.Injection
 
         public float GetBranchOutInterval(int level) => _levels[level].BranchOutInterval;
 
-        public float GetBranchOutAngle(int level) => _levels[level].BranchOutAngle;
+        public float GetBranchOutAngle(int level)
+        {
+            var l = _levels[level];
+            return l.BranchOutAngle + Random.Range(-l.BranchOutAngleVariance, l.BranchOutAngleVariance);
+        }
+
+        public float MaxBranchOutHeight => maxBranchOutHeight;
 
         [Serializable]
         private struct LevelEntry
@@ -33,6 +41,7 @@ namespace WreckItRoots.Injection
             public float Velocity;
             public float BranchOutInterval;
             public float BranchOutAngle;
+            public float BranchOutAngleVariance;
         }
     }
 }

@@ -18,8 +18,10 @@ MonoBehaviour:
   generatedBuildingsAheadCount: 6
   buildingEntries:
   - MomentumResistance: 10
-    BioEnergyBonus: 20
+    BioEnergyBonus: 4
   - MomentumResistance: 20
-    BioEnergyBonus: 30
+    BioEnergyBonus: 6
   - MomentumResistance: 30
-    BioEnergyBonus: 40
+    BioEnergyBonus: 8
+  - MomentumResistance: 60
+    BioEnergyBonus: 10

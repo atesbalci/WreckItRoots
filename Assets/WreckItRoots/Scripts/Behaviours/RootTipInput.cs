@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using WreckItRoots.Models;
 
 namespace WreckItRoots.Behaviours
@@ -14,6 +15,12 @@ namespace WreckItRoots.Behaviours
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene(0);
+                return;
+            }
+            
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _rootTip.RootDown();

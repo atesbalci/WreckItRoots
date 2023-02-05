@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae17fa4538b84c33a57b07499ff740b3, type: 3}
   m_Name: RootBranchData
   m_EditorClassIdentifier: 
+  maxBranchOutHeight: -0.5
   rootBranchPrefab: {fileID: 8195361096986383294, guid: 136d1aced5eae423dac042b1f7bd9e1d,
     type: 3}
   _levels:
@@ -19,15 +20,19 @@ MonoBehaviour:
     Velocity: 0
     BranchOutInterval: 0.5
     BranchOutAngle: 120
+    BranchOutAngleVariance: 40
   - Lifetime: 1.5
     Velocity: 1
     BranchOutInterval: 0.25
     BranchOutAngle: 60
+    BranchOutAngleVariance: 20
   - Lifetime: 1
     Velocity: 1
     BranchOutInterval: 0.4
     BranchOutAngle: 60
+    BranchOutAngleVariance: 20
   - Lifetime: 1
     Velocity: 0.5
     BranchOutInterval: 0
     BranchOutAngle: 0
+    BranchOutAngleVariance: 0

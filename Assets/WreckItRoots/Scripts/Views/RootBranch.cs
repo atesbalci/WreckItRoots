@@ -14,7 +14,6 @@ namespace WreckItRoots.Views
         
         private int _level;
         private float _angle;
-        private Vector3[] _vertexes;
         private float _birthTime;
         private Pool _pool;
         private int _branchCount;
@@ -28,8 +27,7 @@ namespace WreckItRoots.Views
             _branchCount = 0;
             _lineRenderer = GetComponent<LineRenderer>();
             StopAllCoroutines();
-            _vertexes = new Vector3[] { position, position };
-            _lineRenderer.SetPositions(_vertexes);
+            _lineRenderer.SetPositions(new Vector3[] { position, position });
             StartCoroutine(UpdateCoroutine());
             if (_rootBranchDataProvider.GetBranchOutInterval(_level) > 0.001f)
             {
@@ -39,11 +37,12 @@ namespace WreckItRoots.Views
 
         private IEnumerator UpdateCoroutine()
         {
-            while (Time.time - _birthTime < _rootBranchDataProvider.GetLifetime(_level))
+            while (Time.time - _birthTime < _rootBranchDataProvider.GetLifetime(_level) &&
+                   _lineRenderer.GetPosition(1).y < _rootBranchDataProvider.MaxBranchOutHeight)
             {
-                _vertexes[^1] += _angle.ToRootAngularDirection() *
-                                 (_rootBranchDataProvider.GetVelocity(_level) * Time.deltaTime);
-                _lineRenderer.SetPositions(_vertexes);
+                _lineRenderer.SetPosition(1,
+                    _lineRenderer.GetPosition(1) + _angle.ToRootAngularDirection() *
+                    (_rootBranchDataProvider.GetVelocity(_level) * Time.deltaTime));
                 yield return null;
             }
             
@@ -62,7 +61,7 @@ namespace WreckItRoots.Views
                 yield return new WaitForSeconds(_rootBranchDataProvider.GetBranchOutInterval(_level));
                 var newAngle = _angle +
                                (_branchCount++ % 2 == 0 ? 1 : -1) * _rootBranchDataProvider.GetBranchOutAngle(_level);
-                _pool.Spawn().Initialize(_level + 1, _vertexes[^1], newAngle, _pool);
+                _pool.Spawn().Initialize(_level + 1, _lineRenderer.GetPosition(1), newAngle, _pool);
             }
         }
 
@@ -71,6 +70,7 @@ namespace WreckItRoots.Views
 
     public interface IRootBranchDataProvider
     {
+        float MaxBranchOutHeight { get; }
         float GetLifetime(int level);
         float GetVelocity(int level);
         float GetBranchOutInterval(int level);

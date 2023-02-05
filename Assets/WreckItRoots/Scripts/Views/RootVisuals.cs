@@ -15,6 +15,7 @@ namespace WreckItRoots.Views
 
         private float _branchOutInterval;
         private float _branchOutAngle;
+        private float _maxBranchOutHeight;
         private int _branchCount;
 
         [Inject]
@@ -24,6 +25,7 @@ namespace WreckItRoots.Views
             _branchPool = branchPool;
             _branchOutInterval = rootBranchDataProvider.GetBranchOutInterval(0);
             _branchOutAngle = rootBranchDataProvider.GetBranchOutAngle(0);
+            _maxBranchOutHeight = rootBranchDataProvider.MaxBranchOutHeight;
             _lineRenderer = GetComponent<LineRenderer>();
             _lineRenderer.SetPosition(0, _rootTip.Position);
             _lineRenderer.positionCount = 1;
@@ -35,7 +37,7 @@ namespace WreckItRoots.Views
             if (_rootTip.State == PlantState.Root)
             {
                 _lineRenderer.SetPosition(_lineRenderer.positionCount - 1, _rootTip.Position);
-                if (Time.time - _lastBranchOutTime > _branchOutInterval)
+                if (Time.time - _lastBranchOutTime > _branchOutInterval && _rootTip.Position.y < _maxBranchOutHeight)
                 {
                     _lastBranchOutTime = Time.time;
                     var newAngle = _rootTip.Angle + (_branchCount++ % 2 == 0 ? 1 : -1) * _branchOutAngle;

@@ -12,6 +12,7 @@ namespace WreckItRoots.Views
             _treePool = treePool;
             _rootTip = rootTip;
             observableGame.RootSurfaced += OnRootSurfaced;
+            OnRootSurfaced();
         }
 
         private void OnRootSurfaced()

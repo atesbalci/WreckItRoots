@@ -7,7 +7,8 @@ namespace WreckItRoots.Views
 {
     public class TreeView : MonoBehaviour
     {
-        private const float HeightMultiplier = 0.15f;
+        private const float HeightMultiplier = 0.1f;
+        private const float InitialTreeHeight = 6f;
         
         [SerializeField] private Transform treesPivot;
         [SerializeField] private GameObject[] trees;
@@ -22,10 +23,11 @@ namespace WreckItRoots.Views
             {
                 trees[i].SetActive(currentTreeIndex == i);
             }
-            
+
+            var height = momentum > 0.001f ? HeightMultiplier * momentum : InitialTreeHeight;
             treesPivot.localScale = Vector3.zero;
             _tween.Kill();
-            _tween = treesPivot.DOScale(HeightMultiplier * momentum, 3f).SetEase(Ease.OutElastic);
+            _tween = treesPivot.DOScale(height, 3f).SetEase(Ease.OutElastic);
         }
 
         private void OnDisable()
