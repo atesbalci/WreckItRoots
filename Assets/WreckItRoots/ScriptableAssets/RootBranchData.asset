@@ -25,5 +25,9 @@ MonoBehaviour:
     BranchOutAngle: 60
   - Lifetime: 1
     Velocity: 1
+    BranchOutInterval: 0.4
+    BranchOutAngle: 60
+  - Lifetime: 1
+    Velocity: 0.5
     BranchOutInterval: 0
     BranchOutAngle: 0
