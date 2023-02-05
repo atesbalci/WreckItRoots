@@ -21,17 +21,20 @@ namespace WreckItRoots.Views
             switch (newState)
             {
                 case PlantState.Root:
-                    musicSource.Play();
+                    if (!musicSource.isPlaying)
+                    {
+                        musicSource.Play();
+                    }
+
                     break;
                 case PlantState.Tree:
-                    musicSource.Pause();
                     foreach (var source in treeSoundSources)
                     {
                         source.Play();
                     }
                     break;
                 default:
-                    musicSource.Stop();
+                    musicSource.Pause();
                     break;
             }
         }
