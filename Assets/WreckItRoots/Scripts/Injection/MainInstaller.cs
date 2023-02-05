@@ -10,15 +10,17 @@ namespace WreckItRoots.Injection
     {
         [SerializeField] private RootTip rootTip;
         [SerializeField] private GameObject treePrefab;
+        [SerializeField] private AudioManager audioManager;
 
         public override void InstallBindings()
         {
             Container.BindInstance<IRootTip>(rootTip);
             Container.Bind(typeof(IBuildingProvider), typeof(ITickable)).To<LevelGenerator>().AsSingle().NonLazy();
-            Container.Bind<IObservableGame>().To<GameManager>().AsSingle().NonLazy();
+            Container.Bind<GameManager>().AsSingle().NonLazy();
             Container.BindMemoryPool<TreeView, TreeView.Pool>().WithInitialSize(20)
                 .FromComponentInNewPrefab(treePrefab);
             Container.Bind<TreesView>().AsSingle().NonLazy();
+            Container.BindInstance<IAudioPlayer>(audioManager).AsSingle();
         }
     }
 }

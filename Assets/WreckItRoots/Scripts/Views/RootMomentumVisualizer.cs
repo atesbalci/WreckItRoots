@@ -11,13 +11,15 @@ namespace WreckItRoots.Views
         
         private ParticleSystem _particles;
         private IRootTip _rootTip;
+        private IAudioPlayer _audioPlayer;
 
         private float _lastFeedbackMomentum;
 
         [Inject]
-        public void Initialize(IRootTip rootTip)
+        public void Initialize(IRootTip rootTip, IAudioPlayer audioPlayer)
         {
             _rootTip = rootTip;
+            _audioPlayer = audioPlayer;
             _particles = GetComponent<ParticleSystem>();
         }
 
@@ -32,6 +34,7 @@ namespace WreckItRoots.Views
                 _lastFeedbackMomentum = _rootTip.RootMomentum;
                 _particles.Stop();
                 _particles.Play();
+                _audioPlayer.PlayBuzzSound();
             }
         }
     }

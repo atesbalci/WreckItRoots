@@ -71,7 +71,7 @@ namespace WreckItRoots.Behaviours
                 _maxDepth = Mathf.Max(_maxDepth, -transform.position.y);
                 if (Position.y > 0.001f)
                 {
-                    Surface();
+                    AttemptToSurface();
                 }
                 else if (RootLifetime > TotalRootLifetime)
                 {
@@ -80,11 +80,16 @@ namespace WreckItRoots.Behaviours
             }
         }
 
-        private void Surface()
+        private void AttemptToSurface()
         {
             var pos = transform.position;
             pos.y = 0;
             transform.position = pos;
+            State = PlantState.Surfacing;
+        }
+
+        public void Surface()
+        {
             Angle = 0;
             TotalRootLifetime = _rootDataProvider.DefaultRootLifetime;
             State = PlantState.Tree;

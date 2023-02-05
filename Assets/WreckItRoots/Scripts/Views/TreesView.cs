@@ -7,17 +7,20 @@ namespace WreckItRoots.Views
         private readonly TreeView.Pool _treePool;
         private readonly IRootTip _rootTip;
 
-        public TreesView(TreeView.Pool treePool, IRootTip rootTip, IObservableGame observableGame)
+        public TreesView(TreeView.Pool treePool, IRootTip rootTip)
         {
             _treePool = treePool;
             _rootTip = rootTip;
-            observableGame.RootSurfaced += OnRootSurfaced;
-            OnRootSurfaced();
+            _rootTip.StateChanged += OnStateChanged;
+            OnStateChanged(rootTip.State, rootTip.State);
         }
 
-        private void OnRootSurfaced()
+        private void OnStateChanged(PlantState oldState, PlantState newState)
         {
-            _treePool.Spawn().Initialize(_rootTip.Position.x, _rootTip.RootMomentum);
+            if (newState == PlantState.Tree)
+            {
+                _treePool.Spawn().Initialize(_rootTip.Position.x, _rootTip.RootMomentum);
+            }
         }
     }
 }

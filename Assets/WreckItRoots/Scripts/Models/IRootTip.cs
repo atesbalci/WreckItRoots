@@ -15,12 +15,14 @@ namespace WreckItRoots.Models
         void RootDown();
         void PickUpExtraLifetime(float amount);
         void Die();
+        void Surface();
     }
 
     public enum PlantState
     {
         Tree,
         Root,
+        Surfacing,
         Dead
     }
 }

@@ -1,13 +1,9 @@
-using System;
 using WreckItRoots.Models;
 
 namespace WreckItRoots.Behaviours
 {
-    public class GameManager : IObservableGame
+    public class GameManager
     {
-        public event Action<IBuilding> BuildingWrecked;
-        public event Action RootSurfaced;
-
         private readonly IRootTip _rootTip;
         private readonly IBuildingProvider _buildingProvider;
 
@@ -20,23 +16,24 @@ namespace WreckItRoots.Behaviours
 
         private void OnStateChanged(PlantState oldState, PlantState newState)
         {
-            if (newState == PlantState.Tree)
+            if (newState == PlantState.Surfacing)
             {
                 foreach (var building in _buildingProvider.Buildings)
                 {
                     // We're already past this building, no need to check the previous ones
                     if (_rootTip.Position.x > building.Position.x + building.Width * 0.5f)
                     {
-                        RootSurfaced?.Invoke();
                         break;
                     }
                     // We're under a building
                     else if (_rootTip.Position.x > building.Position.x - building.Width * 0.5f)
                     {
                         WreckOrFail(building);
-                        break;
+                        return;
                     }
                 }
+                
+                _rootTip.Surface();
             }
         }
 
@@ -46,8 +43,7 @@ namespace WreckItRoots.Behaviours
             {
                 building.Wreck();
                 _rootTip.PickUpExtraLifetime(building.BioEnergyReward);
-                BuildingWrecked?.Invoke(building);
-                RootSurfaced?.Invoke();
+                _rootTip.Surface();
             }
             else
             {
