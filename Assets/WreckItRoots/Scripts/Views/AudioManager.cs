@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using WreckItRoots.Models;
 using Zenject;
@@ -16,9 +17,15 @@ namespace WreckItRoots.Views
 
         private void OnStateChanged(PlantState oldState, PlantState newState)
         {
-            if (newState == PlantState.Root && !musicSource.isPlaying)
+            switch (newState)
             {
-                musicSource.Play();
+                case PlantState.Root:
+                    musicSource.Play();
+                    break;
+                default:
+                    musicSource.Pause();
+                    break;
+                    
             }
         }
     }
